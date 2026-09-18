@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>WORLD WARS THREE | جنگ جهانی سوم</title>
+<style>
+:root{--bg:#070a0f;--panel:#111722;--panel2:#0c1119;--line:#283241;--red:#d21f26;--gold:#c99520;--green:#1e8b5b;--text:#f4f5f7;--muted:#929aa7}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at top,#251014 0,#080b10 40%,#05070a 100%);color:var(--text);font-family:Tahoma,Arial,sans-serif}
+button,input,textarea,select{font-family:inherit}button{border:0;border-radius:12px;padding:11px 15px;color:#fff;background:var(--red);cursor:pointer;font-weight:700}button:hover{filter:brightness(1.12)}button.dark{background:#202936}button.gold{background:#9b7314}button.green{background:var(--green)}
+.hidden{display:none!important}.container{width:min(1200px,94%);margin:auto}
+#loginScreen{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}
+.login{width:min(470px,100%);background:rgba(17,23,34,.97);border:1px solid #344050;border-radius:24px;padding:25px;box-shadow:0 25px 70px #0009}
+.logo{text-align:center;font-size:25px;font-weight:900;margin-bottom:8px}.sub{text-align:center;color:var(--muted);margin-bottom:22px}
+.loginTabs{display:flex;gap:8px;margin-bottom:15px}.loginTabs button{flex:1;background:#1b2430}.loginTabs button.active{background:var(--red)}
+label{display:block;color:#b6beca;margin-top:9px;font-size:13px}input,textarea,select{width:100%;background:#080d14;border:1px solid #303b4b;color:#fff;border-radius:11px;padding:12px;margin-top:6px;outline:none}textarea{min-height:120px;resize:vertical}
+header{position:sticky;top:0;z-index:10;background:rgba(8,11,16,.96);backdrop-filter:blur(12px);border-bottom:1px solid #252d38}
+.top{padding:14px 0;display:flex;justify-content:space-between;align-items:center;gap:12px}.brand{font-weight:900}.user{color:var(--muted);font-size:12px}
+nav{display:flex;gap:7px;overflow-x:auto;padding:0 0 12px}nav button{white-space:nowrap;background:#161e29;padding:9px 12px;font-size:12px}
+nav button.active{background:var(--red)}
+main{padding:18px 0 40px}.page{display:none}.page.active{display:block}
+.card{background:linear-gradient(145deg,#121925,#0d131c);border:1px solid var(--line);border-radius:18px;padding:17px;margin-bottom:14px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}.stat{font-size:25px;font-weight:900;margin-top:7px}.muted{color:var(--muted)}.small{font-size:12px}
+.statcard{min-height:105px}.red{color:#ff6b70}.goldtxt{color:#e8c15e}.greentxt{color:#52d397}
+.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.row>*{flex:1}.row button{flex:0 0 auto}
+.item{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:13px 0;border-bottom:1px solid #232c38}.item:last-child{border-bottom:0}
+.badge{display:inline-block;background:#242d39;padding:5px 9px;border-radius:999px;font-size:11px;margin:3px}
+.notice{padding:13px;border-radius:13px;background:#17120f;border:1px solid #4d3513;margin:10px 0}
+.map{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin-top:15px}.countryTile{background:#18212c;border:1px solid #303b49;border-radius:12px;padding:14px 7px;text-align:center;min-height:78px}.countryTile b{display:block;margin-bottom:5px}.countryTile span{font-size:11px;color:#9fa8b5}
+.adminBox{border:1px solid #612125;background:linear-gradient(145deg,#211115,#111722)}
+hr{border:0;border-top:1px solid #27303c;margin:18px 0}
+@media(max-width:650px){.map{grid-template-columns:repeat(3,1fr)}.top{align-items:flex-start;flex-direction:column}}
+</style>
+</head>
+<body>
+
+<div id="loginScreen">
+<div class="login">
+<div class="logo">🌍 WORLD WARS THREE</div>
+<div class="sub">جنگ جهانی سوم — نسخه بازی و شبیه‌سازی</div>
+<div class="loginTabs">
+<button id="countryTab" class="active" onclick="switchLogin('country')">🌍 ورود کشور</button>
+<button id="adminTab" onclick="switchLogin('admin')">🔐 ورود ادمین</button>
+</div>
+
+<div id="countryLogin">
+<label>ID کشور</label>
+<input id="countryId" placeholder="مثلاً ARIN">
+<label>UID کشور</label>
+<input id="countryUid" placeholder="مثلاً 228897">
+<button style="width:100%;margin-top:14px" onclick="countryLogin()">ورود به کشور</button>
+</div>
+
+<div id="adminLogin" class="hidden">
+<label>نام کاربری ادمین</label>
+<input id="adminUser" placeholder="ADMIN">
+<label>رمز پنل</label>
+<input id="adminPass" type="password" placeholder="رمز ادمین">
+<button style="width:100%;margin-top:14px" onclick="adminLogin()">ورود به پنل ادمین</button>
+<div class="notice small">ورود آزمایشی این نسخه: نام کاربری <b>ADMIN</b> و رمز <b>WW3-ADMIN</b></div>
+</div>
+</div>
+</div>
+
+<div id="app" class="hidden">
+<header>
+<div class="container">
+<div class="top"><div class="brand">🌍 WORLD WARS THREE | جنگ جهانی سوم</div><div id="userInfo" class="user"></div></div>
+<nav id="nav"></nav>
+</div>
+</header>
+
+<main class="container">
+
+<section id="dashboard" class="page active">
+<h2>🏠 داشبورد کشور</h2>
+<div class="grid">
+<div class="card statcard">💰 سکه<div id="dCoins" class="stat goldtxt">0</div></div>
+<div class="card statcard">💎 میل<div id="dMils" class="stat greentxt">0</div></div>
+<div class="card statcard">💼 تعداد دارایی<div id="dAssets" class="stat">0</div></div>
+<div class="card statcard">⚡ قدرت<div id="dPower" class="stat red">0</div></div>
+<div class="card statcard">📅 روز جنگ<div id="dDay" class="stat">1</div></div>
+</div>
+<div class="card"><h3>💼 دارایی‌های کشور</h3><div id="dashboardAssets"></div></div>
+</section>
+
+<section id="map" class="page">
+<div class="card"><h2>🗺️ نقشه بازی</h2><p class="muted">کشورها، قدرت و وضعیت فعلی بازی در این نقشه نمایش داده می‌شوند.</p><div id="worldMap" class="map"></div></div>
+</section>
+
+<section id="war" class="page">
+<div class="card"><h2>⚔️ جنگ و سناریو</h2><p class="muted">سناریوها در چارچوب قوانین بازی ثبت و بر اساس قدرت بازی محاسبه می‌شوند.</p>
+<textarea id="scenario" placeholder="سناریوی بازی را بنویسید..."></textarea>
+<button onclick="submitScenario()">ثبت سناریو</button>
+<div id="scenarioResult"></div></div>
+</section>
+
+<section id="news" class="page"><div class="card"><h2>📰 کانال خبر</h2><p class="muted">انتشار خبر فقط از پنل ادمین انجام می‌شود.</p><div id="newsList"></div></div></section>
+
+<section id="statements" class="page"><div class="card"><h2>📢 بیانیه‌ها</h2><p class="muted">بیانیه‌ها از پنل ادمین منتشر می‌شوند.</p><div id="statementList"></div></div></section>
+
+<section id="alliances" class="page">
+<div class="card"><h2>🤝 اتحادها</h2><div class="notice">هزینه ساخت اتحاد: <b>۲۰۰ سکه</b></div>
+<div class="row"><input id="allianceName" placeholder="نام اتحاد"><button onclick="createAlliance()">ساخت اتحاد</button></div>
+<div id="alliancesList"></div></div>
+</section>
+
+<section id="economy" class="page"><div class="card"><h2>🏦 اقتصاد کشور</h2><div id="economyData"></div></div></section>
+
+<section id="equipment" class="page"><div class="card"><h2>🛠️ تجهیزات</h2><div id="equipmentList"></div></div></section>
+<section id="vip" class="page"><div class="card"><h2>👑 تجهیزات VIP</h2><div id="vipList"></div></div></section>
+
+<section id="store" class="page"><div class="card"><h2>🛒 فروشگاه</h2><p>تبدیل سکه به میل</p><div id="storeList"></div><div class="notice">برای درخواست خرید با <b>@Rick0O</b> تماس بگیرید.</div></div></section>
+
+<section id="convert" class="page"><div class="card"><h2>🔄 تبدیل سکه → میل</h2><div class="notice">نرخ پایه: ۱۰۰ سکه = ۱۰۰ میل</div>
+<div class="row"><input id="convertInput" type="number" min="100" step="100" placeholder="مقدار سکه"><button onclick="convertCoins()">تبدیل</button></div></div></section>
+
+<section id="ranking" class="page"><div class="card"><h2>🏆 رتبه‌بندی</h2><div id="rankingList"></div></div></section>
+<section id="history" class="page"><div class="card"><h2>📜 تاریخچه</h2><div id="historyList"></div></div></section>
+
+<section id="admin" class="page">
+<div class="card adminBox"><h2>🔐 پنل مدیریت ادمین</h2><p class="muted">کنترل کامل اطلاعات بازی</p>
+
+<h3>📅 مدیریت روز جنگ</h3>
+<div class="row"><input id="adminDay" type="number" min="1"><button onclick="setDay()">ثبت روز</button></div>
+
+<hr><h3>💰 مدیریت سکه و 💎 میل کشور</h3>
+<label>کشور مورد نظر</label><select id="adminCountry"></select>
+<div class="grid">
+<div><label>مقدار تغییر سکه (+ یا -)</label><input id="coinChange" type="number" placeholder="مثلاً 500 یا -200"><button onclick="changeCoins()">اعمال سکه</button></div>
+<div><label>مقدار تغییر میل (+ یا -)</label><input id="milChange" type="number" placeholder="مثلاً 500 یا -200"><button onclick="changeMils()">اعمال میل</button></div>
+<div><label>تغییر قدرت (+ یا -)</label><input id="powerChange" type="number" placeholder="مثلاً 100 یا -50"><button onclick="changePower()">اعمال قدرت</button></div>
+</div>
+
+<hr><h3>📰 انتشار خبر</h3>
+<input id="newsTitle" placeholder="عنوان خبر">
+<textarea id="newsBody" placeholder="متن خبر"></textarea>
+<button onclick="publishNews()">📰 انتشار خبر</button>
+
+<hr><h3>📢 انتشار بیانیه</h3>
+<textarea id="statementBody" placeholder="متن بیانیه رسمی"></textarea>
+<button onclick="publishStatement()">📢 انتشار بیانیه</button>
+
+<hr><h3>📋 گزارش فعالیت‌ها</h3><div id="adminLogs"></div>
+</div>
+</section>
+
+</main>
+</div>
+
+<script>
+const countrySeed=[
+["ایران","ARIN","228897"],["آمریکا","AMER","381452"],["چین","CHINA","517263"],["روسیه","RUSS","694821"],
+["بریتانیا","BRIT","745219"],["فرانسه","FRAN","826314"],["آلمان","GERM","913572"],["ژاپن","JAPA","164835"],
+["هند","INDI","275946"],["ترکیه","TURK","438721"],["کره جنوبی","KORS","562174"],["کره شمالی","KORN","673905"],
+["عربستان","SAUD","781246"],["پاکستان","PAKI","894315"],["اندونزی","INDO","316482"],["اسرائیل","ISRA","427593"],
+["ایتالیا","ITAL","538614"],["اسپانیا","SPAI","649725"],["لهستان","POLA","752836"],["اوکراین","UKRA","863947"],
+["هلند","NETH","974158"],["سوئد","SWED","185269"],["نروژ","NORW","296371"],["فنلاند","FINL","307482"],
+["یونان","GREE","418593"],["کانادا","CANA","529604"],["مکزیک","MEXI","630715"],["برزیل","BRAZ","741826"],
+["آرژانتین","ARGE","852937"],["شیلی","CHIL","963148"],["مصر","EGYP","174259"],["آفریقای جنوبی","SAFR","285361"],
+["الجزایر","ALGE","396472"],["مراکش","MORO","407583"],["نیجریه","NIGE","518694"],["اتیوپی","ETHI","629705"],
+["استرالیا","AUST","730816"],["نیوزیلند","NEWZ","841927"]
+];
+
+const equipment=[
+["سپر آذر-۱",10,50],["شبکه سایه-۲",20,100],["زره نوا-۳",30,160],["دفاع رعد-۴",50,240],["ناوگان نکسوس-۵",75,350],["هسته گاد-۶",100,500]
+];
+const vipEquipment=[
+["VIP نوا-۷",100,700],["VIP سایه-۸",250,1500],["VIP رعد-۹",400,2800],["VIP تایتان-۱۰",600,4200],["VIP گاد-۱۱",800,6000],["VIP اولترا-۱۲",1000,8500]
+];
+
+let db=JSON.parse(localStorage.getItem("WW3_DATABASE_V2")||"null");
+if(!db){
+ db={day:1,countries:{},news:[],statements:[],alliances:[],logs:[],scenarios:[]};
+ countrySeed.forEach((x,i)=>db.countries[x[1]]={name:x[0],id:x[1],uid:x[2],coins:1000,mils:1000,power:100+(i*8),assets:[]});
+ save();
+}
+let session=null;
+
+function save(){localStorage.setItem("WW3_DATABASE_V2",JSON.stringify(db))}
+function n(x){return Number(x||0).toLocaleString("fa-IR")}
+function dateNow(){return new Date().toLocaleString("fa-IR")}
+function current(){return db.countries[session]}
+function power(c){return Math.max(0,Number(c.power||0)+c.assets.reduce((s,a)=>s+Number(a.bonus||0),0))}
+function addLog(t){db.logs.unshift(dateNow()+" — "+t);db.logs=db.logs.slice(0,150);save()}
+function switchLogin(type){
+ document.getElementById("countryLogin").classList.toggle("hidden",type!=="country");
+ document.getElementById("adminLogin").classList.toggle("hidden",type!=="admin");
+ document.getElementById("countryTab").classList.toggle("active",type==="country");
+ document.getElementById("adminTab").classList.toggle("active",type==="admin");
+}
+function countryLogin(){
+ let id=document.getElementById("countryId").value.trim().toUpperCase();
+ let uid=document.getElementById("countryUid").value.trim();
+ let c=db.countries[id];
+ if(!c||c.uid!==uid){alert("ID یا UID اشتباه است.");return}
+ session=id;openApp();addLog("ورود کشور "+c.name);
+}
+function adminLogin(){
+ let u=document.getElementById("adminUser").value.trim().toUpperCase();
+ let p=document.getElementById("adminPass").value;
+ if(u!=="ADMIN"||p!=="WW3-ADMIN"){alert("نام کاربری یا رمز ادمین اشتباه است.");return}
+ session="ADMIN";openApp();addLog("ورود ادمین");
+}
+const nav=[
+["dashboard","🏠 داشبورد"],["map","🗺️ نقشه بازی"],["war","⚔️ جنگ"],["news","📰 کانال خبر"],["statements","📢 بیانیه‌ها"],
+["alliances","🤝 اتحادها"],["economy","🏦 اقتصاد"],["equipment","🛠️ تجهیزات"],["vip","👑 تجهیزات VIP"],
+["store","🛒 فروشگاه"],["convert","🔄 تبدیل"],["ranking","🏆 رتبه‌بندی"],["history","📜 تاریخچه"]
+];
+function openApp(){
+ document.getElementById("loginScreen").classList.add("hidden");
+ document.getElementById("app").classList.remove("hidden");
+ buildNav();renderAll();
+}
+function buildNav(){
+ let el=document.getElementById("nav");el.innerHTML="";
+ let items=session==="ADMIN"?[["admin","🔐 پنل ادمین"],...nav]:nav;
+ items.forEach(([id,t])=>{
+  let b=document.createElement("button");b.type="button";b.textContent=t;
+  b.onclick=()=>showPage(id);el.appendChild(b);
+ });
+}
+function showPage(id){
+ document.querySelectorAll(".page").forEach(x=>x.classList.remove("active"));
+ document.getElementById(id).classList.add("active");
+ window.scrollTo({top:0,behavior:"smooth"});
+ renderAll();
+}
+function renderAll(){
+ if(session==="ADMIN"){renderAdmin();document.getElementById("userInfo").textContent="🔐 مدیر سیستم";return}
+ let c=current();
+ document.getElementById("userInfo").textContent="🌍 "+c.name+" | ID: "+c.id+" | UID: "+c.uid;
+ document.getElementById("dCoins").textContent=n(c.coins);
+ document.getElementById("dMils").textContent=n(c.mils);
+ document.getElementById("dAssets").textContent=n(c.assets.length);
+ document.getElementById("dPower").textContent=n(power(c));
+ document.getElementById("dDay").textContent=n(db.day);
+ document.getElementById("dashboardAssets").innerHTML=c.assets.length?c.assets.map((a,i)=>`<div class="item"><span>💼 ${a.name}<br><small class="muted">قدرت +${n(a.bonus)}</small></span><span class="badge">دارایی #${i+1}</span></div>`).join(""):"<p class='muted'>هنوز دارایی‌ای خریداری نشده است.</p>";
+ renderMap();renderNews();renderStatements();renderAlliances();renderEquipment();renderVIP();renderStore();renderRanking();renderHistory();
+ document.getElementById("economyData").innerHTML=`<div class="grid"><div class="card">💰 سکه<h2>${n(c.coins)}</h2></div><div class="card">💎 میل<h2>${n(c.mils)}</h2></div><div class="card">💼 دارایی<h2>${n(c.assets.length)}</h2></div><div class="card">⚡ قدرت<h2>${n(power(c))}</h2></div></div>`;
+}
+function renderMap(){
+ document.getElementById("worldMap").innerHTML=Object.values(db.countries).map(c=>`<div class="countryTile"><b>${c.name}</b><span>قدرت ${n(power(c))}</span><br><span>${c.assets.length} دارایی</span></div>`).join("");
+}
+function renderNews(){document.getElementById("newsList").innerHTML=db.news.length?db.news.map(x=>`<div class="notice"><b>📰 ${x.title}</b><p>${x.body}</p><small class="muted">${x.date}</small></div>`).join(""):"<p class='muted'>هنوز خبری منتشر نشده است.</p>"}
+function renderStatements(){document.getElementById("statementList").innerHTML=db.statements.length?db.statements.map(x=>`<div class="notice"><b>📢 بیانیه رسمی</b><p>${x.body}</p><small class="muted">${x.date}</small></div>`).join(""):"<p class='muted'>هنوز بیانیه‌ای منتشر نشده است.</p>"}
+function createAlliance(){
+ let name=document.getElementById("allianceName").value.trim(),c=current();
+ if(!name)return alert("نام اتحاد را وارد کن.");
+ if(c.coins<200)return alert("برای ساخت اتحاد ۲۰۰ سکه لازم است.");
+ c.coins-=200;db.alliances.push({name,owner:c.id,members:[c.id]});addLog(c.name+" اتحاد «"+name+"» را ساخت.");save();renderAll();alert("اتحاد ساخته شد.");
+}
+function renderAlliances(){document.getElementById("alliancesList").innerHTML=db.alliances.length?db.alliances.map(a=>`<div class="item"><span>🤝 <b>${a.name}</b><br><small class="muted">سازنده: ${db.countries[a.owner]?.name||a.owner} | اعضا: ${a.members.length}</small></span></div>`).join(""):"<p class='muted'>اتحادی ساخته نشده است.</p>"}
+function buy(name,cost,currency,bonus){
+ let c=current();
+ if(c[currency]<cost)return alert("موجودی کافی نیست.");
+ c[currency]-=cost;c.assets.push({name,bonus});
+ addLog(c.name+" «"+name+"» را خرید.");
+ save();renderAll();alert("خرید موفق بود؛ آیتم به دارایی‌های کشور اضافه شد.");
+}
+function renderEquipment(){document.getElementById("equipmentList").innerHTML=equipment.map(x=>`<div class="item"><span>🛠️ <b>${x[0]}</b><br><small class="muted">قیمت: ${n(x[1])} میل | قدرت +${n(x[2])}</small></span><button class="green" onclick="buy('${x[0]}',${x[1]},'mils',${x[2]})">خرید</button></div>`).join("")}
+function renderVIP(){document.getElementById("vipList").innerHTML=vipEquipment.map(x=>`<div class="item"><span>👑 <b>${x[0]}</b><br><small class="muted">قیمت: ${n(x[1])} سکه | قدرت +${n(x[2])}</small></span><button class="gold" onclick="buy('${x[0]}',${x[1]},'coins',${x[2]})">خرید</button></div>`).join("")}
+function renderStore(){
+ let b=[[100,100],[200,200],[500,500],[1000,1000],[2000,2000]];
+ document.getElementById("storeList").innerHTML=b.map(x=>`<div class="item"><span>💰 ${n(x[0])} سکه → 💎 ${n(x[1])} میل</span><button onclick="directConvert(${x[0]},${x[1]})">تبدیل</button></div>`).join("");
+}
+function directConvert(co,mil){let c=current();if(c.coins<co)return alert("سکه کافی نیست.");c.coins-=co;c.mils+=mil;addLog(c.name+" "+n(co)+" سکه را به "+n(mil)+" میل تبدیل کرد.");save();renderAll()}
+function convertCoins(){let x=Number(document.getElementById("convertInput").value);if(!x||x<100||x%100)return alert("مقدار باید مضرب ۱۰۰ باشد.");directConvert(x,x)}
+function renderRanking(){
+ let a=Object.values(db.countries).sort((x,y)=>power(y)-power(x));
+ document.getElementById("rankingList").innerHTML=a.map((c,i)=>`<div class="item"><span>#${i+1} — ${c.name}</span><b>${n(power(c))}</b></div>`).join("");
+}
+function submitScenario(){
+ let t=document.getElementById("scenario").value.trim();if(!t)return alert("سناریو را وارد کن.");
+ let c=current();db.scenarios.unshift({country:c.id,text:t,date:dateNow()});addLog(c.name+" سناریو ثبت کرد.");
+ let a=Object.values(db.countries).sort((x,y)=>power(y)-power(x));
+ document.getElementById("scenarioResult").innerHTML="<div class='notice'>سناریو ثبت شد. جدول قدرت بازی:</div>"+a.slice(0,10).map((x,i)=>`<div class="item">#${i+1} ${x.name}<b>${n(power(x))}</b></div>`).join("");
+}
+function renderHistory(){document.getElementById("historyList").innerHTML=db.logs.length?db.logs.map(x=>`<div class="item">${x}</div>`).join(""):"<p class='muted'>تاریخچه خالی است.</p>"}
+
+function renderAdmin(){
+ document.getElementById("adminDay").value=db.day;
+ let s=document.getElementById("adminCountry");
+ s.innerHTML=Object.values(db.countries).map(c=>`<option value="${c.id}">${c.name} — ${c.id} — UID ${c.uid}</option>`).join("");
+ document.getElementById("adminLogs").innerHTML=db.logs.length?db.logs.map(x=>`<div class="item">${x}</div>`).join(""):"<p class='muted'>لاگی ثبت نشده.</p>";
+}
+function target(){return db.countries[document.getElementById("adminCountry").value]}
+function setDay(){let d=Number(document.getElementById("adminDay").value);if(d<1)return alert("روز معتبر نیست.");db.day=d;addLog("ادمین روز جنگ را به "+d+" تغییر داد.");save();renderAll();alert("روز جنگ تغییر کرد.")}
+function changeCoins(){let x=Number(document.getElementById("coinChange").value),c=target();c.coins=Math.max(0,c.coins+x);addLog("ادمین سکه "+c.name+" را "+(x>=0?"+":"")+x+" تغییر داد.");save();renderAll();alert("سکه تغییر کرد.")}
+function changeMils(){let x=Number(document.getElementById("milChange").value),c=target();c.mils=Math.max(0,c.mils+x);addLog("ادمین میل "+c.name+" را "+(x>=0?"+":"")+x+" تغییر داد.");save();renderAll();alert("میل تغییر کرد.")}
+function changePower(){let x=Number(document.getElementById("powerChange").value),c=target();c.power=Math.max(0,c.power+x);addLog("ادمین قدرت "+c.name+" را "+(x>=0?"+":"")+x+" تغییر داد.");save();renderAll();alert("قدرت تغییر کرد.")}
+function publishNews(){
+ let title=document.getElementById("newsTitle").value.trim(),body=document.getElementById("newsBody").value.trim();
+ if(!title||!body)return alert("عنوان و متن خبر را کامل کن.");
+ db.news.unshift({title,body,date:dateNow()});addLog("ادمین خبر «"+title+"» را منتشر کرد.");save();renderAll();alert("خبر منتشر شد.");
+}
+function publishStatement(){
+ let body=document.getElementById("statementBody").value.trim();if(!body)return alert("متن بیانیه را وارد کن.");
+ db.statements.unshift({body,date:dateNow()});addLog("ادمین بیانیه منتشر کرد.");save();renderAll();alert("بیانیه منتشر شد.");
+}
+</script>
+</body>
+</html>
